@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arpit Singh Negi® | Edge-AI & Cloud Architecture Portfolio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              purple: '#7c5cff',
+              purpleHover: '#6a47ff',
+              darkBg: '#090a16',
+              cardBg: '#121429',
+              cardBorder: '#23274a',
+              accentCyan: '#00f0ff',
+              awsOrange: '#FF9900'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+            serif: ['Newsreader', 'Playfair Display', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #090a16;
+      color: #f1f5f9;
+      font-family: 'Inter', sans-serif;
+    }
+    .hero-glow {
+      background: radial-gradient(circle at 50% 20%, rgba(124, 92, 255, 0.24) 0%, rgba(255, 153, 0, 0.12) 40%, transparent 70%);
+    }
+    .glass-card {
+      background: rgba(18, 20, 41, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(124, 92, 255, 0.2);
+    }
+    .glass-card:hover {
+      border-color: rgba(124, 92, 255, 0.5);
+      box-shadow: 0 10px 35px -10px rgba(124, 92, 255, 0.25);
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: 200%;
+      animation: marquee 25s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.96); opacity: 0.85; }
+      50% { transform: scale(1.04); opacity: 1; }
+      100% { transform: scale(0.96); opacity: 0.85; }
+    }
+    .pulse-glow {
+      animation: pulse-ring 2.5s infinite ease-in-out;
+    }
+    .gradient-hero-text {
+      background: linear-gradient(135deg, #ffffff 30%, #c4b5fd 70%, #ff9900 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-brand-purple selection:text-white pb-20 md:pb-24 relative">
+  <!-- Interactive Ambient Background Canvas (Scene Switcher) -->
+  <canvas id="ambient-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+  <!-- Top Announcement / Challenge Hint Banner -->
+  <aside aria-label="Interactive challenge hint" class="bg-gradient-to-r from-purple-950/70 via-brand-purple/20 to-amber-950/70 border-b border-purple-500/30 py-2 px-4 text-center z-50 relative">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs sm:text-sm font-medium text-purple-200">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span class="font-bold text-amber-400">⚡ AWS CHALLENGE FEATURE:</span>
+      <span>Test the in-browser <strong>MediaPipe ISL Gesture Sandbox</strong>, try <strong>🎙️ AI Talk Back</strong>, or press <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] font-mono border border-slate-700">⌘K</kbd> for Command Palette!</span>
+      <a href="#simulator" class="underline font-bold text-white hover:text-amber-300 ml-1 transition-colors">Test Sandbox ↓</a>
+    </div>
+  </aside>
+
+  <!-- Sticky Cyber Header -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#090a16]/90 border-b border-slate-800/80 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Realtime Location/Clock -->
+      <div class="flex items-center gap-4">
+        <a href="#hero" class="flex items-center gap-2.5 group">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-purple via-indigo-600 to-amber-500 flex items-center justify-center text-white font-extrabold text-sm shadow-lg group-hover:scale-105 transition-transform">
+            AN®
+          </div>
+          <span class="font-black text-sm tracking-tight text-white group-hover:text-purple-300 transition-colors">
+            ARPIT SINGH NEGI®
+          </span>
+        </a>
+        <div class="hidden lg:flex items-center gap-2 pl-3 border-l border-slate-800 text-[11px] font-mono text-slate-400">
+          <span>DEHRADUN, UK // IST</span>
+          <span class="text-slate-600">|</span>
+          <span id="live-clock" class="text-purple-400 font-semibold">--:--:--</span>
+        </div>
+      </div>
+
+      <!-- Navigation Anchors -->
+      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider text-slate-300">
+        <a href="#about" class="hover:text-purple-400 transition-colors">About</a>
+        <a href="#skills" class="hover:text-purple-400 transition-colors">Skills</a>
+        <a href="#projects" class="hover:text-purple-400 transition-colors">Projects</a>
+        <a href="#events" class="hover:text-purple-400 transition-colors">Community</a>
+        <a href="#simulator" class="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 font-bold">
+          <span>⚡ Live Sandbox</span>
+        </a>
+        <a href="#terminal" class="hover:text-purple-400 transition-colors">Terminal</a>
+        <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
+      </nav>
+
+      <!-- Command Palette Button, AI Voice & Quick CTA -->
+      <div class="flex items-center gap-2.5">
+        
+        <!-- Scene Mode Switcher & Audio FX Toggle -->
+        <div class="hidden md:flex items-center gap-1.5 p-1 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] font-mono">
+          <span class="text-slate-500 pl-1.5 text-[10px]">SCENE:</span>
+          <button id="scene-particles-btn" class="scene-btn active px-2 py-0.5 rounded-lg bg-brand-purple text-white font-bold" data-scene="particles">Particles</button>
+          <button id="scene-matrix-btn" class="scene-btn px-2 py-0.5 rounded-lg text-slate-400 hover:text-white" data-scene="matrix">Matrix</button>
+          <button id="scene-constellation-btn" class="scene-btn px-2 py-0.5 rounded-lg text-slate-400 hover:text-white" data-scene="constellation">Stars</button>
+          <span class="text-slate-700">|</span>
+          <button id="audio-toggle-btn" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-amber-400 flex items-center gap-1" title="Toggle UI Sound Effects">
+            <span id="audio-icon">🔇</span>
+            <span class="text-[10px]">SFX</span>
+          </button>
+        </div>
+
+        <!-- AI Talk Back Voice Guide Button -->
+        <button id="open-ai-talk-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-600/30 to-amber-500/30 hover:from-purple-600/50 hover:to-amber-500/50 border border-purple-400/50 text-white text-xs font-mono font-bold transition-all shadow-md hover:scale-105" title="Listen to Arpit's AI Voice Assistant">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>🎙️ AI Talk Back</span>
+        </button>
+
+        <!-- Command Palette Trigger (Cmd+K) -->
+        <button id="open-cmd-palette-btn" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-purple-500/50 text-slate-400 hover:text-white text-xs font-mono transition-all" title="Open Command Palette (Cmd+K)">
+          <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <span>Search</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400 border border-slate-700">⌘K</kbd>
+        </button>
+
+        <!-- Status Pill -->
+        <div class="hidden xl:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-semibold text-emerald-400 font-mono">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>AWS SBGL · SDSUV</span>
+        </div>
+
+        <a href="#simulator" class="px-4 py-2 rounded-full bg-brand-purple hover:bg-brand-purpleHover text-white text-xs font-bold shadow-lg shadow-purple-500/25 transition-all hover:scale-105 pulse-glow flex items-center gap-1.5">
+          <span>Test Gesture AI</span>
+        </a>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-btn" aria-label="Open navigation menu" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-5 border-b border-slate-800 bg-[#0c0e20] space-y-2 text-xs font-semibold uppercase tracking-wider">
+      <a href="#about" class="mobile-link block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">About Me</a>
+      <a href="#skills" class="mobile-link block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">Technical Skills</a>
+      <a href="#projects" class="mobile-link block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">Projects</a>
+      <a href="#events" class="mobile-link block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">Community & Events</a>
+      <a href="#simulator" class="mobile-link block px-3 py-2 rounded-lg text-amber-400 bg-amber-500/10 hover:bg-amber-500/20">⚡ Test Live ISL Sandbox</a>
+      <a href="#terminal" class="mobile-link block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">CLI Terminal</a>
+      <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">Contact</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-grow">
+    
+    <section id="hero" class="relative pt-16 pb-20 md:pt-28 md:pb-32 overflow-hidden hero-glow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="max-w-4xl mx-auto text-center">
+          
+          <!-- Badge Header -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-mono mb-8">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span>AWS Student Builder Challenge: Build Your Tech Superpower</span>
+          </div>
+
+          <!-- Bold Display Headline -->
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.08]">
+            ENGINEERING <span class="gradient-hero-text">EDGE AI</span> & SERVERLESS CLOUD
+          </h1>
+
+          <p class="mt-6 text-lg sm:text-xl text-slate-300 font-light leading-relaxed max-w-2xl mx-auto">
+            I'm <strong class="font-bold text-white">Arpit Singh Negi</strong> — Computer Science student at SDSUV Dehradun, AWS Student Builder Group Leader, and builder of low-latency AI accessibility systems.
+          </p>
+
+          <!-- Core Stat Highlights -->
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-slate-300">
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center gap-1.5">
+              <span class="text-amber-400">●</span> IIT Roorkee TIDES & IIM Kashipur Bootcamps
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center gap-1.5">
+              <span class="text-brand-purple">●</span> 21 3D Skeletal Landmarks
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center gap-1.5">
+              <span class="text-emerald-400">●</span> 100% AWS Amplify & CloudFront
+            </span>
+          </div>
+
+          <!-- Primary CTAs -->
+          <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <a href="#simulator" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-brand-purple to-indigo-600 hover:from-brand-purpleHover hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-purple-500/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+              <span>Try Live ISL Gesture Simulator</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-white/20 font-mono">Interactive</span>
+            </a>
+            <a href="#projects" class="px-7 py-3.5 rounded-full bg-slate-900/90 border border-slate-700 hover:border-purple-400/50 text-slate-200 font-bold text-sm transition-all hover:bg-slate-800">
+              View Architecture & Code →
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tech Marquee / Stack Ribbon -->
+    <div class="w-full overflow-hidden py-4 bg-[#0d0f22] border-y border-slate-800/80">
+      <div class="animate-marquee flex items-center gap-8 whitespace-nowrap text-xs font-mono text-slate-400 uppercase tracking-widest">
+        <span>AWS Amplify</span> • 
+        <span>MediaPipe Edge AI</span> • 
+        <span>Smart Khet IoT</span> • 
+        <span>Amazon CloudFront</span> • 
+        <span>Llama 3 & Qwen 2.5</span> • 
+        <span>ESP32 & Industrial IoT</span> • 
+        <span>Python & OpenCV</span> • 
+        <span>Flutter & Dart</span> • 
+        <span>Gemini API</span> • 
+        <span>Amazon S3</span> • 
+        <span>NASSCOM & MeitY Certified</span> • 
+        <span>Google AI Studio</span> • 
+        <span>PostgreSQL & SQL</span> • 
+        <span>AWS SBGL Leader</span> •
+        <!-- Duplicate for continuous loop -->
+        <span>AWS Amplify</span> • 
+        <span>MediaPipe Edge AI</span> • 
+        <span>Smart Khet IoT</span> • 
+        <span>Amazon CloudFront</span> • 
+        <span>Llama 3 & Qwen 2.5</span> • 
+        <span>ESP32 & Industrial IoT</span> • 
+        <span>Python & OpenCV</span> • 
+        <span>Flutter & Dart</span> • 
+        <span>Gemini API</span> • 
+        <span>Amazon S3</span> • 
+        <span>NASSCOM & MeitY Certified</span> • 
+        <span>Google AI Studio</span> • 
+        <span>PostgreSQL & SQL</span> • 
+        <span>AWS SBGL Leader</span>
+      </div>
+    </div>
+
+    <!-- CORE SECTION 1: ABOUT ME -->
+    <section id="about" class="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <div class="lg:col-span-4">
+          <div class="sticky top-24">
+            <span class="text-xs font-mono uppercase tracking-widest text-brand-purple font-bold">01 / The Origin Story</span>
+            <h2 class="mt-2 text-3xl sm:text-4xl font-black text-white tracking-tight">About Me</h2>
+            <p class="mt-3 font-serif italic text-lg text-slate-400">
+              "Building technology not for the top 1%, but for the underserved communities that need it most."
+            </p>
+            <div class="mt-6 p-5 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs font-mono space-y-2 text-slate-300">
+              <div class="flex justify-between"><span class="text-slate-500">Location:</span> <span>Dehradun, Uttarakhand</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">College:</span> <span>SDSUV Dehradun ('28)</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Community:</span> <span class="text-amber-400">AWS SBGL Chapter Leader</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Heritage:</span> <span>Nipun Rover (BSG)</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Bootcamps:</span> <span class="text-purple-300">IIT Roorkee TIDES & IIM Kashipur</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8 space-y-6 text-slate-300 text-base leading-relaxed font-light">
+          <p>
+            Raised in Dehradun at the threshold of the Garhwal Himalayas, I developed a passion for engineering driven by local reality. In hilly regions and smaller towns, expensive GPUs and ultra-high-speed fiber networks aren't guaranteed. 
+          </p>
+          <p>
+            This fueled my obsession with <strong class="text-white font-semibold">Edge AI and Serverless Cloud Architecture</strong>. Through <span class="text-purple-300 font-medium">EDP and Entrepreneurship Bootcamps at IIT Roorkee TIDES and IIM Kashipur FIED</span>, I refined <span class="text-purple-300 font-medium">Newlife Tech</span>—a real-time Indian Sign Language (ISL) interpreter. I refused to build another bloated cloud API that costs dollars per minute. Instead, I architected lightweight 21-landmark coordinate extraction running in-browser on client devices at 60 FPS, turning standard smartphone webcams into live translation bridges.
+          </p>
+          <p>
+            Beyond coding, I live by the scout motto <em class="text-amber-300 font-serif italic">"Be Prepared"</em> earned as a Nipun Rover in The Bharat Scouts and Guides, <strong class="text-white font-medium">guiding every decision</strong>. Today, as the <strong class="text-white font-semibold">AWS Student Builder Group Leader</strong> at Govt Degree College Dehradun Shahar, I mentor fellow undergraduates on cloud fundamentals, guiding 300+ students toward their AWS Builder IDs and launching their first serverless cloud deployments.
+          </p>
+          <p class="text-xs font-mono text-slate-400 pt-2 border-t border-slate-800">
+            <span class="text-amber-400 font-bold">Certifications & Validations:</span> Certified by NASSCOM, Boot.dev, Infosys Springboard, and Ministry of Electronics and Information Technology (MeitY) in Prompt Engineering, Backend Systems, Cybersecurity, AI, and Office Tools.
+          </p>
+
+          <div class="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-2xl font-black text-white">300+</span>
+              <p class="text-xs text-slate-400 font-mono mt-1">Target AWS Builder ID sign-ups on campus</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-2xl font-black text-brand-purple">&lt; 15ms</span>
+              <p class="text-xs text-slate-400 font-mono mt-1">Edge inference latency on local video frames</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-2xl font-black text-amber-400">100%</span>
+              <p class="text-xs text-slate-400 font-mono mt-1">Serverless AWS Amplify & CloudFront uptime</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CORE SECTION 2: TECHNICAL SKILLS & CORE COMPETENCIES -->
+    <section id="skills" class="py-20 bg-[#0d0f22] border-y border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-xs font-mono uppercase tracking-widest text-brand-purple font-bold">02 / The Capability Matrix</span>
+          <h2 class="mt-2 text-3xl sm:text-5xl font-black text-white tracking-tight">Technical Skills & Competencies</h2>
+          <p class="mt-3 text-slate-400 text-sm">Every skill calibrated for high-performance edge inference and resilient cloud deployment.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Competency 1: Cloud & Serverless -->
+          <div class="glass-card rounded-2xl p-6 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-2xl mb-5">
+              ☁️
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Cloud & Serverless (AWS)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-5">
+              Rapid provisioning of web apps, static assets, and edge pipelines using AWS serverless tools with built-in SSL and global CDN distribution.
+            </p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">AWS Amplify</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">Amazon CloudFront</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">Amazon S3</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">IAM Security</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">ACM TLS 1.3</span>
+            </div>
+          </div>
+
+          <!-- Competency 2: Edge Vision & LLMs -->
+          <div class="glass-card rounded-2xl p-6 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-brand-purple flex items-center justify-center font-bold text-2xl mb-5">
+              👁️
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Edge Vision & LLMs</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-5">
+              Extracting real-time landmarks and gestures via MediaPipe without expensive GPUs, integrated with modern LLMs (Llama 3, Qwen 2.5, Gemini API).
+            </p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">MediaPipe Vision</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Llama 3 & Qwen 2.5</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Gemini API</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">OpenCV</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Prompt Eng</span>
+            </div>
+          </div>
+
+          <!-- Competency 3: Embedded Systems & IIoT -->
+          <div class="glass-card rounded-2xl p-6 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-2xl mb-5">
+              🌱
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Embedded Systems & IIoT</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-5">
+              Microcontroller firmware, low-power telemetry, sensor pipelines (soil, ambient micro-climate), and industrial IoT automation networks.
+            </p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">ESP32 SoCs</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">MQTT Telemetry</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Industrial IoT</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Embedded C/C++</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Deep-Sleep Power</span>
+            </div>
+          </div>
+
+          <!-- Competency 4: Systems & Workstations -->
+          <div class="glass-card rounded-2xl p-6 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-2xl mb-5">
+              ⚙️
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Backend Architecture & OS</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-5">
+              Solid grasp of data structures, relational databases, RESTful endpoints, and cross-platform UI workstations like Flutter Desktop and Linux systems.
+            </p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Python & C++</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Flutter / Dart</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">SQL & Schemas</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Linux & Git</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">REST Endpoints</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CORE SECTION 3: PROJECTS -->
+    <section id="projects" class="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-brand-purple font-bold">03 / Production Systems</span>
+          <h2 class="mt-2 text-3xl sm:text-5xl font-black text-white tracking-tight">Featured Projects</h2>
+        </div>
+        <p class="mt-4 md:mt-0 text-slate-400 text-xs font-mono">
+          EVALUATED AGAINST REAL ACCESSIBILITY & CLOUD BENCHMARKS
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Project 1: Newlife Tech ISL -->
+        <div class="glass-card rounded-3xl p-7 flex flex-col justify-between relative overflow-hidden border-purple-500/30">
+          <div class="absolute top-0 right-0 px-4 py-1.5 bg-amber-500/20 border-b border-l border-amber-500/40 text-[10px] font-mono font-bold text-amber-300 rounded-bl-xl">
+            IIT ROORKEE & IIM KASHIPUR
+          </div>
+          <div>
+            <span class="text-xs font-mono text-amber-400 font-semibold">01 // Edge-AI Accessibility</span>
+            <h3 class="text-2xl font-bold text-white mt-2">Newlife Tech: ISL Translation Ecosystem</h3>
+            <p class="mt-3 text-xs text-slate-300 leading-relaxed">
+              Real-time Indian Sign Language (ISL) gesture translation system. Extracts 21 3D hand landmarks via MediaPipe and applies geometric landmark tracking for instantaneous translation on everyday consumer webcams. Refined via EDP & Entrepreneurship Bootcamps at IIT Roorkee TIDES & IIM Kashipur FIED.
+            </p>
+            
+            <div class="mt-6 p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs font-mono">
+              <div class="flex justify-between text-slate-400">
+                <span>Inference Latency:</span> <span class="text-emerald-400">&lt; 12ms (Edge)</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Cloud GPU Cost:</span> <span class="text-emerald-400">$0.00 / month</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Landmarks:</span> <span class="text-white">21 Skeletal Points</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-mono text-purple-300">MediaPipe · Python · Edge AI</span>
+            <a href="#simulator" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1">
+              <span>Test Sandbox</span> →
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 2: Smart Khet -->
+        <div class="glass-card rounded-3xl p-7 flex flex-col justify-between relative overflow-hidden border-emerald-500/30">
+          <div class="absolute top-0 right-0 px-4 py-1.5 bg-emerald-500/20 border-b border-l border-emerald-500/40 text-[10px] font-mono font-bold text-emerald-300 rounded-bl-xl">
+            PRECISION AGRI-TECH
+          </div>
+          <div>
+            <span class="text-xs font-mono text-emerald-400 font-semibold">02 // IoT & Climate Resilience</span>
+            <h3 class="text-2xl font-bold text-white mt-2">Smart Khet (स्मार्ट खेत): Himalayan Precision Farming</h3>
+            <p class="mt-3 text-xs text-slate-300 leading-relaxed">
+              An IoT and edge-intelligence framework engineered for smallholder terrace farmers in Uttarakhand. Captures real-time soil moisture, humidity, and micro-climate telemetry to automate drip irrigation and provide early crop frost/pest alerts over low-bandwidth channels.
+            </p>
+
+            <div class="mt-6 p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs font-mono">
+              <div class="flex justify-between text-slate-400">
+                <span>Water Savings:</span> <span class="text-emerald-400">~40% Reduction in Wastage</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Hardware & Protocol:</span> <span class="text-purple-300">ESP32 SoC · MQTT Telemetry</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Target Geography:</span> <span class="text-white">Rainfed Hill Farms, Uttarakhand</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-mono text-emerald-300">ESP32 · Sensors · AWS Cloud · Edge Alerting</span>
+            <a href="#terminal" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+              <span>Inspect Telemetry</span> →
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 3: Arpit_OS -->
+        <div class="glass-card rounded-3xl p-7 flex flex-col justify-between relative overflow-hidden">
+          <div>
+            <span class="text-xs font-mono text-purple-400 font-semibold">03 // Systems & Telemetry</span>
+            <h3 class="text-2xl font-bold text-white mt-2">Arpit_OS Architecture & DARKONE</h3>
+            <p class="mt-3 text-xs text-slate-300 leading-relaxed">
+              A custom desktop workstation interface and command center engineered in Flutter. Fuses real-time multimodal AI vision engines, system load monitoring, and autonomous task workers.
+            </p>
+
+            <div class="mt-6 p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs font-mono">
+              <div class="flex justify-between text-slate-400">
+                <span>Framework:</span> <span class="text-white">Flutter Desktop</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>AI Subsystems:</span> <span class="text-purple-300">Vision + Agent Dispatch</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Telemetry:</span> <span class="text-emerald-400">Sub-second Sync</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-mono text-purple-300">Flutter · Dart · System Design</span>
+            <a href="#terminal" class="text-xs font-bold text-slate-300 hover:text-white flex items-center gap-1">
+              <span>CLI View</span> →
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 4: Nutri-Bridge -->
+        <div class="glass-card rounded-3xl p-7 flex flex-col justify-between relative overflow-hidden">
+          <div>
+            <span class="text-xs font-mono text-cyan-400 font-semibold">04 // Public Health Data</span>
+            <h3 class="text-2xl font-bold text-white mt-2">Nutri-Bridge Uttarakhand</h3>
+            <p class="mt-3 text-xs text-slate-300 leading-relaxed">
+              Informatics pipeline and relational schema mapping youth diet diversity metrics and micronutrient deficits across hilly districts of Uttarakhand, delivering actionable data to public health volunteers.
+            </p>
+
+            <div class="mt-6 p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs font-mono">
+              <div class="flex justify-between text-slate-400">
+                <span>Data Modeling:</span> <span class="text-white">Normalized Relational SQL</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Target Demographic:</span> <span class="text-emerald-400">Uttarakhand Youth</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Analytics:</span> <span class="text-purple-300">Python Pandas & BI</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-mono text-purple-300">Python · SQL · Health Informatics</span>
+            <a href="#contact" class="text-xs font-bold text-slate-300 hover:text-white flex items-center gap-1">
+              <span>Collaborate</span> →
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COMMUNITY & EVENTS SECTION -->
+    <section id="events" class="py-20 bg-[#0d0f22] border-t border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-brand-purple font-bold">04 / Leadership & Outreach</span>
+            <h2 class="mt-2 text-3xl sm:text-5xl font-black text-white tracking-tight">Community & Events</h2>
+          </div>
+          <p class="mt-4 md:mt-0 text-slate-400 text-xs font-mono">
+            ORGANIZING & CHAMPIONING DEVELOPER COMMUNITIES ACROSS UTTARAKHAND
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Event 1: AWS SBGL -->
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 text-[11px] font-mono font-bold">CAMPUS CHAPTER</span>
+                <span class="text-xs font-mono text-slate-400">2026 - Present</span>
+              </div>
+              <h3 class="text-lg font-bold text-white">AWS Student Builder Group Leader</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Appointed leader for Govt Degree College Dehradun Shahar. Organizing hands-on cloud labs, tabling events, and driving 300+ student signups for AWS Builder IDs.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+              <span>Meetup Pro Chapter</span>
+              <span class="text-amber-400 font-bold">Amazon Web Services</span>
+            </div>
+          </div>
+
+          <!-- Event 2: GDG Build with AI -->
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-2.5 py-1 rounded bg-purple-500/20 text-purple-300 text-[11px] font-mono font-bold">TECHNICAL SUMMIT</span>
+                <span class="text-xs font-mono text-slate-400">Aug 2026</span>
+              </div>
+              <h3 class="text-lg font-bold text-white">GDG Dehradun: Build with AI</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Active member participating at Graphic Era Hill University summit. Explored on-device LLMs, vector search embeddings, and multimodal generative engineering.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+              <span>Graphic Era Hill Univ</span>
+              <span class="text-purple-400 font-bold">GDG Dehradun</span>
+            </div>
+          </div>
+
+          <!-- Event 3: Nipun Rover Service -->
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-mono font-bold">YOUTH LEADERSHIP</span>
+                <span class="text-xs font-mono text-slate-400">Certified Nipun</span>
+              </div>
+              <h3 class="text-lg font-bold text-white">Nipun Rover Scout Leadership</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Led civic community initiatives in the Garhwal Himalayas through The Bharat Scouts and Guides, instilling disciplined crisis management and the motto "Be Prepared".
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+              <span>Garhwal Region</span>
+              <span class="text-emerald-400 font-bold">Scouts & Guides</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- THE CREATIVE FEATURE: LIVE IN-BROWSER ISL GESTURE SANDBOX -->
+    <!-- ========================================================= -->
+    <section id="simulator" class="py-20 md:py-28 bg-[#070814] border-y border-purple-500/30 relative overflow-hidden">
+      
+      <!-- Glow background -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-brand-purple/15 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- Feature Header with Visible Hint Badge -->
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-mono font-bold mb-4 pulse-glow">
+            <span>⚡ THE CREATIVE FEATURE · LIVE IN-BROWSER DEMO</span>
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">MediaPipe ISL Gesture Sandbox</h2>
+          <p class="mt-3 text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+            Test the landmark engine behind my IIT Roorkee TIDES & IIM Kashipur project. Click any sign gesture to simulate live 21-landmark skeletal tracking and real-time inference right in your browser!
+          </p>
+        </div>
+
+        <!-- The Interactive Sandbox Console -->
+        <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          
+          <!-- Left: Gesture Selectors & Controls -->
+          <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+            <div>
+              <p class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-3">1. Select an Indian Sign Language Gesture:</p>
+              
+              <div class="grid grid-cols-1 gap-2.5" id="gesture-buttons">
+                
+                <button class="gesture-btn active text-left p-3.5 rounded-xl border border-brand-purple bg-brand-purple/20 text-white flex items-center justify-between transition-all" data-gesture="namaste">
+                  <div class="flex items-center gap-3">
+                    <span class="text-2xl">🙏</span>
+                    <div>
+                      <p class="text-sm font-bold">Namaste (Respect / Greeting)</p>
+                      <p class="text-[11px] text-purple-300 font-mono">Both hands joined, vertical palm alignment</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-mono text-emerald-400 font-bold">ACTIVE</span>
+                </button>
+
+                <button class="gesture-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 text-slate-300 flex items-center justify-between transition-all" data-gesture="help">
+                  <div class="flex items-center gap-3">
+                    <span class="text-2xl">🆘</span>
+                    <div>
+                      <p class="text-sm font-bold">Help / Assistance</p>
+                      <p class="text-[11px] text-slate-400 font-mono">Open base palm supporting upright fist</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-mono text-slate-500 font-bold">READY</span>
+                </button>
+
+                <button class="gesture-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 text-slate-300 flex items-center justify-between transition-all" data-gesture="love">
+                  <div class="flex items-center gap-3">
+                    <span class="text-2xl">🤟</span>
+                    <div>
+                      <p class="text-sm font-bold">I Love You / Support</p>
+                      <p class="text-[11px] text-slate-400 font-mono">Thumb, index, and pinky extended</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-mono text-slate-500 font-bold">READY</span>
+                </button>
+
+                <button class="gesture-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 text-slate-300 flex items-center justify-between transition-all" data-gesture="victory">
+                  <div class="flex items-center gap-3">
+                    <span class="text-2xl">✌️</span>
+                    <div>
+                      <p class="text-sm font-bold">Peace / Victory (Be Prepared)</p>
+                      <p class="text-[11px] text-slate-400 font-mono">Scout motto & universal peace emblem</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-mono text-slate-500 font-bold">READY</span>
+                </button>
+
+              </div>
+            </div>
+
+            <!-- Pipeline Execution Indicator -->
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono space-y-2">
+              <div class="text-slate-400 text-[10px] uppercase tracking-wider">Edge Inference Pipeline:</div>
+              <div class="flex items-center gap-1.5 text-slate-300 flex-wrap">
+                <span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">1. Video Frame</span> →
+                <span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">2. MediaPipe 21-Points</span> →
+                <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">3. Match (99.4%)</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Visual Landmark Skeletal Canvas & Telemetry Display -->
+          <div class="lg:col-span-7 flex flex-col justify-between p-6 rounded-3xl bg-[#0f1124] border border-brand-purple/40 shadow-2xl relative">
+            
+            <!-- Top Canvas Status Bar -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-xs font-mono text-white font-bold" id="telemetry-status">LIVE SKELETAL LANDMARK STREAM</span>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-purple/20 text-purple-300 border border-brand-purple/30">
+                100% Client-Side Edge
+              </span>
+            </div>
+
+            <!-- Skeletal Canvas Display -->
+            <div class="relative w-full h-64 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-center overflow-hidden mb-4">
+              <canvas id="hand-canvas" width="400" height="250" class="w-full h-full object-contain"></canvas>
+              
+              <!-- Floating Coordinate Tag Overlay -->
+              <div class="absolute bottom-3 left-3 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-lg text-[10px] font-mono text-slate-300">
+                <span>Landmark Coordinates: </span>
+                <span class="text-amber-400 font-bold" id="landmark-coords">X: 0.512 | Y: 0.384 | Z: -0.041</span>
+              </div>
+            </div>
+
+            <!-- Live Output Translation Box -->
+            <div class="p-4 rounded-xl bg-gradient-to-r from-purple-950/60 to-slate-950 border border-purple-500/30 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-mono text-purple-300 uppercase tracking-wider">Synthesized Translation:</span>
+                <h4 class="text-2xl font-black text-white" id="translated-text">"NAMASTE" (नमस्ते)</h4>
+                <p class="text-xs text-slate-400 mt-0.5" id="translated-desc">Indian Sign Language standard greeting denoting respect and welcome.</p>
+              </div>
+              <div class="text-right font-mono">
+                <span class="text-xs text-slate-400 block">CONFIDENCE</span>
+                <span class="text-xl font-bold text-emerald-400" id="confidence-metric">99.4%</span>
+                <span class="text-[10px] text-slate-500 block">LATENCY: 8.2ms</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INTERACTIVE CLI TERMINAL (ARPIT_OS SHELL) -->
+    <section id="terminal" class="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-8">
+        <span class="text-xs font-mono uppercase tracking-widest text-brand-purple font-bold">05 / Command Line Interface</span>
+        <h2 class="mt-1 text-2xl sm:text-3xl font-black text-white">Arpit_OS Cloud Shell</h2>
+        <p class="text-xs text-slate-400 mt-1">Interact with my portfolio through a live simulated terminal.</p>
+      </div>
+
+      <div class="rounded-2xl bg-[#090b17] border border-slate-800 shadow-2xl overflow-hidden font-mono text-xs">
+        
+        <!-- Terminal Titlebar -->
+        <div class="bg-[#12152b] px-4 py-2.5 border-b border-slate-800 flex items-center justify-between text-slate-400">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+            <span class="ml-2 text-slate-300 text-[11px]">arpit@aws-amplify:~</span>
+          </div>
+          <span class="text-[10px] text-slate-500">Bash v5.2 · AWS ap-south-1</span>
+        </div>
+
+        <!-- Terminal Output Stream -->
+        <div id="terminal-output" class="p-5 space-y-2 text-slate-300 min-h-[180px] max-h-[300px] overflow-y-auto">
+          <p class="text-purple-400">Welcome to Arpit_OS Interactive Cloud Shell [Version 1.0.4]</p>
+          <p class="text-slate-400">Type <span class="text-amber-400 font-bold">help</span> to see available commands or click the shortcut chips below.</p>
+        </div>
+
+        <!-- Command Input Form -->
+        <form id="terminal-form" class="bg-[#0e1022] px-4 py-3 border-t border-slate-800 flex items-center gap-2">
+          <span class="text-emerald-400 font-bold">arpit@aws:~$</span>
+          <input type="text" id="terminal-input" autocomplete="off" class="bg-transparent flex-grow text-white text-xs focus:outline-none placeholder-slate-600 font-mono" placeholder="Type a command (e.g. skills, projects, smartkhet, aws, scout, clear)...">
+          <button type="submit" class="px-3 py-1 rounded bg-brand-purple text-white text-[11px] font-bold hover:bg-brand-purpleHover">Run</button>
+        </form>
+
+        <!-- Shortcut Chips -->
+        <div class="bg-[#0b0d1c] px-4 py-2 border-t border-slate-900 flex items-center gap-2 flex-wrap text-[11px] text-slate-400">
+          <span>Quick commands:</span>
+          <button class="cmd-chip px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-purple-300">skills</button>
+          <button class="cmd-chip px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-purple-300">projects</button>
+          <button class="cmd-chip px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-emerald-400">smartkhet</button>
+          <button class="cmd-chip px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-purple-300">aws</button>
+          <button class="cmd-chip px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-purple-300">scout</button>
+          <button class="cmd-chip px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400">clear</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-3xl p-8 sm:p-12 glass-card border-purple-500/40 text-white relative overflow-hidden">
+        
+        <div class="max-w-2xl">
+          <span class="px-3 py-1 rounded-full bg-brand-purple/20 text-purple-300 text-xs font-mono font-bold uppercase tracking-wider">Get in Touch</span>
+          <h2 class="mt-3 text-3xl sm:text-4xl font-black tracking-tight">Let's build something iconic on AWS.</h2>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+            Whether you want to discuss edge AI gesture pipelines, cloud community workshops at your college, or tech collaborations.
+          </p>
+        </div>
+
+        <form id="contact-form" class="mt-8 space-y-4">
+          <div>
+            <label class="block text-xs font-mono text-slate-400 mb-1.5">Project Scope / Topic Interest:</label>
+            <div class="flex flex-wrap gap-2 text-xs font-mono" id="contact-scope-chips">
+              <button type="button" class="scope-chip active px-3 py-1.5 rounded-lg border border-brand-purple bg-brand-purple/20 text-purple-300 font-bold">Edge-AI & ISL Vision</button>
+              <button type="button" class="scope-chip px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-400 hover:text-white">Smart Khet AgriTech</button>
+              <button type="button" class="scope-chip px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-400 hover:text-white">AWS Student Workshop</button>
+              <button type="button" class="scope-chip px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-400 hover:text-white">General Inquiry</button>
+            </div>
+            <input type="hidden" id="selected-scope" name="selected-scope" value="Edge-AI & ISL Vision">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="contact-name" class="block text-xs font-mono text-slate-400 mb-1">Your Name</label>
+              <input type="text" id="contact-name" required class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs font-mono focus:outline-none focus:border-brand-purple transition-all" placeholder="Jane Doe">
+            </div>
+            <div>
+              <label for="contact-email" class="block text-xs font-mono text-slate-400 mb-1">Your Email</label>
+              <input type="email" id="contact-email" required class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs font-mono focus:outline-none focus:border-brand-purple transition-all" placeholder="jane@example.com">
+            </div>
+          </div>
+
+          <div>
+            <label for="contact-message" class="block text-xs font-mono text-slate-400 mb-1">Message</label>
+            <textarea id="contact-message" rows="3" required class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs font-mono focus:outline-none focus:border-brand-purple transition-all" placeholder="Say hello or ask about my AWS Student Builder sessions..."></textarea>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <button type="submit" class="px-8 py-3.5 rounded-full bg-brand-purple hover:bg-brand-purpleHover text-white font-bold text-xs shadow-lg shadow-purple-500/25 transition-all">
+              Send Message
+            </button>
+            <span class="text-xs font-mono text-slate-400">arpitnegi969@gmail.com</span>
+          </div>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- FLOATING BOTTOM NAVIGATION DOCK (BENCHMARK FEATURE) -->
+  <!-- ======================================================== -->
+  <aside aria-label="Quick navigation dock" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 px-3 py-2 rounded-full bg-[#121429]/90 backdrop-blur-xl border border-brand-purple/40 shadow-2xl flex items-center gap-1.5 sm:gap-2">
+    <a href="#hero" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1" title="Top">
+      <span>🏠</span> <span class="hidden sm:inline">Home</span>
+    </a>
+    <a href="#about" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1" title="About">
+      <span>👤</span> <span class="hidden sm:inline">About</span>
+    </a>
+    <a href="#skills" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1" title="Skills">
+      <span>⚡</span> <span class="hidden sm:inline">Skills</span>
+    </a>
+    <a href="#projects" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1" title="Projects">
+      <span>🚀</span> <span class="hidden sm:inline">Projects</span>
+    </a>
+    <a href="#simulator" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition-all flex items-center gap-1" title="Live Sandbox">
+      <span>👁️</span> <span class="hidden sm:inline font-bold">ISL AI</span>
+    </a>
+    <a href="#terminal" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1" title="Terminal">
+      <span>💻</span> <span class="hidden sm:inline">CLI</span>
+    </a>
+    <a href="#contact" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1" title="Contact">
+      <span>✉️</span> <span class="hidden sm:inline">Contact</span>
+    </a>
+    <button id="dock-ai-talk-btn" class="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 transition-all flex items-center gap-1" title="AI Talk Back Voice Guide">
+      <span>🎙️</span> <span class="hidden sm:inline font-bold">AI Voice</span>
+    </button>
+    <div class="h-4 w-[1px] bg-slate-700 mx-1"></div>
+    <button id="dock-cmd-btn" class="p-2 sm:px-2.5 sm:py-1 rounded-full text-[11px] font-mono bg-brand-purple hover:bg-brand-purpleHover text-white font-bold transition-all" title="Command Palette (Cmd+K)">
+      ⌘K
+    </button>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- COMMAND PALETTE MODAL (CMD+K / SEARCH) -->
+  <!-- ======================================================== -->
+  <div id="cmd-palette-modal" class="fixed inset-0 z-50 hidden flex items-start justify-center pt-20 p-4 bg-slate-950/80 backdrop-blur-md">
+    <div class="bg-[#10132b] border border-brand-purple/50 rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden font-mono text-xs">
+      
+      <!-- Search Input -->
+      <div class="p-3 border-b border-slate-800 flex items-center gap-3">
+        <svg class="w-4 h-4 text-brand-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input type="text" id="cmd-search-input" placeholder="Type a section or action (e.g. isl, khet, voice, projects, skills, aws, email)..." class="bg-transparent flex-grow text-white focus:outline-none placeholder-slate-500">
+        <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400 border border-slate-700">ESC</kbd>
+      </div>
+
+      <!-- Quick Action Results -->
+      <div class="p-3 space-y-1 max-h-72 overflow-y-auto" id="cmd-results">
+        <a href="#simulator" class="cmd-item block p-2.5 rounded-xl hover:bg-brand-purple/20 text-slate-200 hover:text-white flex items-center justify-between">
+          <span>⚡ <strong>Launch ISL Gesture Sandbox</strong> (Edge Vision AI)</span>
+          <span class="text-[10px] text-amber-400">Interactive</span>
+        </a>
+        <button id="cmd-ai-talk-trigger" class="cmd-item w-full text-left p-2.5 rounded-xl hover:bg-brand-purple/20 text-purple-300 hover:text-white flex items-center justify-between">
+          <span>🎙️ <strong>Open AI Talk Back Voice Assistant</strong> (Spoken Guide)</span>
+          <span class="text-[10px] text-emerald-400 font-bold">Voice Synthesis</span>
+        </button>
+        <a href="#projects" class="cmd-item block p-2.5 rounded-xl hover:bg-brand-purple/20 text-slate-200 hover:text-white flex items-center justify-between">
+          <span>🌱 <strong>Smart Khet (स्मार्ट खेत)</strong> (Himalayan Precision AgriTech & IoT)</span>
+          <span class="text-[10px] text-emerald-400 font-bold">Project 02</span>
+        </a>
+        <a href="#projects" class="cmd-item block p-2.5 rounded-xl hover:bg-brand-purple/20 text-slate-200 hover:text-white flex items-center justify-between">
+          <span>🚀 <strong>Featured Projects</strong> (Newlife Tech, Smart Khet, Arpit_OS, Nutri-Bridge)</span>
+          <span class="text-[10px] text-slate-500">Section 03</span>
+        </a>
+        <a href="#skills" class="cmd-item block p-2.5 rounded-xl hover:bg-brand-purple/20 text-slate-200 hover:text-white flex items-center justify-between">
+          <span>⚡ <strong>Technical Skills</strong> (Cloud AWS, LLMs, ESP32 IIoT, Systems)</span>
+          <span class="text-[10px] text-slate-500">Section 02</span>
+        </a>
+        <a href="#about" class="cmd-item block p-2.5 rounded-xl hover:bg-brand-purple/20 text-slate-200 hover:text-white flex items-center justify-between">
+          <span>👤 <strong>About Arpit Singh Negi</strong> (Origin Story, Nipun Rover)</span>
+          <span class="text-[10px] text-slate-500">Section 01</span>
+        </a>
+        <a href="#events" class="cmd-item block p-2.5 rounded-xl hover:bg-brand-purple/20 text-slate-200 hover:text-white flex items-center justify-between">
+          <span>👥 <strong>AWS Student Community</strong> (Govt Degree College Dehradun)</span>
+          <span class="text-[10px] text-slate-500">Section 04</span>
+        </a>
+        <a href="#terminal" class="cmd-item block p-2.5 rounded-xl hover:bg-brand-purple/20 text-slate-200 hover:text-white flex items-center justify-between">
+          <span>💻 <strong>Open Arpit_OS Terminal Shell</strong></span>
+          <span class="text-[10px] text-slate-500">CLI</span>
+        </a>
+      </div>
+
+      <div class="p-2.5 bg-slate-900/80 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-500">
+        <span>Tip: Press ESC to close</span>
+        <span class="text-purple-400">Arpit_OS Quick Nav</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 py-8 bg-[#070814] text-xs font-mono text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-slate-300 font-bold">ARPIT SINGH NEGI®</span>
+        <span>•</span>
+        <span>Deployed via AWS Amplify Hosting & Amazon CloudFront</span>
+      </div>
+      <div>
+        AWS Student Builder Challenge: "Build Your Tech Superpower" (Nov 2026)
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-20 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="px-5 py-3 rounded-xl bg-slate-900 border border-brand-purple text-white shadow-2xl flex items-center gap-3">
+      <span class="text-emerald-400 text-lg">✓</span>
+      <div>
+        <p class="text-xs font-bold" id="toast-title">Message Sent!</p>
+        <p class="text-xs text-slate-400" id="toast-body">Thank you! Your note has been received.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- AI TALK BACK VOICE ASSISTANT MODAL (INTERACTIVE AUDIO) -->
+  <!-- ======================================================== -->
+  <div id="ai-talk-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+    <div class="bg-[#0f1124] border border-purple-500/50 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden text-white font-mono text-xs">
+      
+      <!-- Top Ambient Glow -->
+      <div class="absolute -top-16 -right-16 w-56 h-56 bg-brand-purple/25 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Header -->
+      <div class="flex items-start justify-between border-b border-slate-800 pb-4 mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-purple via-indigo-600 to-amber-500 flex items-center justify-center text-xl shadow-lg">
+            🎙️
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-bold text-white">Arpit AI Voice Assistant</h3>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">ACTIVE</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Interactive speech synthesis powered by browser Web Speech API.</p>
+          </div>
+        </div>
+        <button id="close-ai-talk-btn" aria-label="Close AI Talk Back" class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Animated Sound Waveform Visualizer -->
+      <div class="p-4 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-between gap-4 mb-4">
+        <div class="flex items-center gap-1.5 h-8" id="soundwave-bars">
+          <span class="w-1.5 bg-brand-purple rounded-full h-2 transition-all duration-150 sound-bar"></span>
+          <span class="w-1.5 bg-brand-purple rounded-full h-4 transition-all duration-150 sound-bar"></span>
+          <span class="w-1.5 bg-amber-400 rounded-full h-7 transition-all duration-150 sound-bar"></span>
+          <span class="w-1.5 bg-brand-purple rounded-full h-3 transition-all duration-150 sound-bar"></span>
+          <span class="w-1.5 bg-brand-purple rounded-full h-6 transition-all duration-150 sound-bar"></span>
+          <span class="w-1.5 bg-emerald-400 rounded-full h-2 transition-all duration-150 sound-bar"></span>
+          <span class="w-1.5 bg-brand-purple rounded-full h-5 transition-all duration-150 sound-bar"></span>
+          <span class="w-1.5 bg-brand-purple rounded-full h-3 transition-all duration-150 sound-bar"></span>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <button id="speech-pause-btn" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold">
+            ⏸️ Pause
+          </button>
+          <button id="speech-stop-btn" class="px-3 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 text-[11px] font-bold border border-red-500/40">
+            ⏹️ Stop
+          </button>
+        </div>
+      </div>
+
+      <!-- Dialogue Speech Box -->
+      <div class="p-4 rounded-2xl bg-slate-900 border border-purple-500/30 min-h-[90px] mb-4 flex flex-col justify-between">
+        <p class="text-slate-200 text-xs leading-relaxed" id="ai-speech-caption">
+          "Hello! I am Arpit's AI portfolio voice assistant. Click any topic below or ask me a question to hear all about Arpit's edge AI projects, AWS cloud leadership, and background."
+        </p>
+        <div class="flex items-center justify-between text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-800/80">
+          <span>Synthesizer: Native Client SpeechSynthesis</span>
+          <span id="speech-status-label" class="text-amber-400 font-bold">READY TO SPEAK</span>
+        </div>
+      </div>
+
+      <!-- Preset Question Chips (Click to Talk Back) -->
+      <div>
+        <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-2">Tap a Topic to Hear AI Talk Back:</p>
+        <div class="grid grid-cols-2 gap-2" id="ai-topic-chips">
+          <button class="ai-topic-btn p-2 rounded-xl bg-slate-800/80 hover:bg-brand-purple/20 border border-slate-700 hover:border-brand-purple text-left text-slate-300 hover:text-white transition-all" data-topic="intro">
+            <span class="font-bold block text-white">👤 Who is Arpit?</span>
+            <span class="text-[10px] text-slate-400">Education, origin & focus</span>
+          </button>
+          
+          <button class="ai-topic-btn p-2 rounded-xl bg-slate-800/80 hover:bg-brand-purple/20 border border-slate-700 hover:border-brand-purple text-left text-slate-300 hover:text-white transition-all" data-topic="skills">
+            <span class="font-bold block text-amber-300">⚡ Technical Skills</span>
+            <span class="text-[10px] text-slate-400">MediaPipe, AWS & IIoT</span>
+          </button>
+
+          <button class="ai-topic-btn p-2 rounded-xl bg-slate-800/80 hover:bg-brand-purple/20 border border-slate-700 hover:border-brand-purple text-left text-slate-300 hover:text-white transition-all" data-topic="isl">
+            <span class="font-bold block text-purple-300">🤟 Newlife Tech ISL</span>
+            <span class="text-[10px] text-slate-400">IIT Roorkee TIDES & IIM FIED</span>
+          </button>
+
+          <button class="ai-topic-btn p-2 rounded-xl bg-slate-800/80 hover:bg-brand-purple/20 border border-slate-700 hover:border-brand-purple text-left text-slate-300 hover:text-white transition-all" data-topic="khet">
+            <span class="font-bold block text-emerald-300">🌱 Smart Khet IoT</span>
+            <span class="text-[10px] text-slate-400">Precision Hill Farming</span>
+          </button>
+
+          <button class="ai-topic-btn p-2 rounded-xl bg-slate-800/80 hover:bg-brand-purple/20 border border-slate-700 hover:border-brand-purple text-left text-slate-300 hover:text-white transition-all" data-topic="aws">
+            <span class="font-bold block text-amber-400">☁️ AWS Leadership</span>
+            <span class="text-[10px] text-slate-400">Student Builder Group Lead</span>
+          </button>
+
+          <button class="ai-topic-btn p-2 rounded-xl bg-slate-800/80 hover:bg-brand-purple/20 border border-slate-700 hover:border-brand-purple text-left text-slate-300 hover:text-white transition-all" data-topic="scout">
+            <span class="font-bold block text-white">🧭 Scout Motto</span>
+            <span class="text-[10px] text-slate-400">Nipun Rover "Be Prepared"</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ask Any Custom Question Form -->
+      <form id="ai-ask-form" class="mt-4 pt-3 border-t border-slate-800 flex items-center gap-2">
+        <input type="text" id="ai-custom-query" placeholder="Ask AI anything (e.g., certifications, college, projects, IoT)..." class="flex-grow px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-brand-purple">
+        <button type="submit" class="px-4 py-2 rounded-xl bg-brand-purple hover:bg-brand-purpleHover text-white font-bold text-xs flex items-center gap-1">
+          <span>Speak</span> 🔊
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- SCRIPT FOR ALL INTERACTIVE FEATURES -->
+  <script>
+    // 1. Live Clock for Dehradun / IST
+    function updateClock() {
+      const now = new Date();
+      const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const timeStr = now.toLocaleTimeString('en-GB', options);
+      const clockEl = document.getElementById('live-clock');
+      if (clockEl) clockEl.textContent = timeStr + ' IST';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    document.querySelectorAll('.mobile-link').forEach(l => {
+      l.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // 3. Command Palette Modal (Cmd+K / Search)
+    const cmdModal = document.getElementById('cmd-palette-modal');
+    const openCmdBtn = document.getElementById('open-cmd-palette-btn');
+    const dockCmdBtn = document.getElementById('dock-cmd-btn');
+    const cmdSearchInput = document.getElementById('cmd-search-input');
+    const cmdItems = document.querySelectorAll('.cmd-item');
+    const cmdAiTalkTrigger = document.getElementById('cmd-ai-talk-trigger');
+
+    function openPalette() {
+      cmdModal.classList.remove('hidden');
+      cmdSearchInput.focus();
+    }
+    function closePalette() {
+      cmdModal.classList.add('hidden');
+    }
+
+    if (openCmdBtn) openCmdBtn.addEventListener('click', openPalette);
+    if (dockCmdBtn) dockCmdBtn.addEventListener('click', openPalette);
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (cmdModal.classList.contains('hidden')) { openPalette(); } else { closePalette(); }
+      }
+      if (e.key === 'Escape' && !cmdModal.classList.contains('hidden')) {
+        closePalette();
+      }
+    });
+
+    cmdModal.addEventListener('click', (e) => {
+      if (e.target === cmdModal) closePalette();
+    });
+
+    cmdItems.forEach(item => {
+      item.addEventListener('click', () => closePalette());
+    });
+
+    cmdSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      cmdItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (q === '' || text.includes(q)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+
+    // 4. MediaPipe ISL Gesture Sandbox Canvas Drawer
+    const canvas = document.getElementById('hand-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const gestureData = {
+      namaste: {
+        text: '"NAMASTE" (नमस्ते)',
+        desc: 'Indian Sign Language standard greeting denoting respect and welcome with hands pressed vertically.',
+        confidence: '99.4%',
+        coords: 'X: 0.512 | Y: 0.384 | Z: -0.041',
+        draw: (ctx, w, h) => {
+          ctx.clearRect(0, 0, w, h);
+          ctx.strokeStyle = '#7c5cff';
+          ctx.lineWidth = 2.5;
+          ctx.fillStyle = '#00f0ff';
+
+          const points = [
+            [w*0.5, h*0.25], [w*0.48, h*0.45], [w*0.52, h*0.45],
+            [w*0.45, h*0.65], [w*0.55, h*0.65], [w*0.42, h*0.85], [w*0.58, h*0.85]
+          ];
+          ctx.beginPath();
+          ctx.moveTo(points[0][0], points[0][1]);
+          points.forEach(p => ctx.lineTo(p[0], p[1]));
+          ctx.stroke();
+
+          for (let i = 0; i < 21; i++) {
+            const rx = w*0.44 + (Math.sin(i)*w*0.06);
+            const ry = h*0.25 + (i * (h*0.6 / 21));
+            ctx.beginPath();
+            ctx.arc(rx, ry, 3.5, 0, Math.PI*2);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+          }
+        }
+      },
+      help: {
+        text: '"HELP" (मदद)',
+        desc: 'ISL emergency assistance sign: closed dominant fist resting on flat palm pushing upward.',
+        confidence: '98.8%',
+        coords: 'X: 0.490 | Y: 0.442 | Z: +0.015',
+        draw: (ctx, w, h) => {
+          ctx.clearRect(0, 0, w, h);
+          ctx.strokeStyle = '#ff9900';
+          ctx.lineWidth = 2.5;
+          ctx.fillStyle = '#ff5c5c';
+
+          ctx.beginPath();
+          ctx.moveTo(w*0.3, h*0.75);
+          ctx.lineTo(w*0.7, h*0.75);
+          ctx.stroke();
+
+          for (let i = 0; i < 21; i++) {
+            const px = w*0.45 + ((i % 5) * 12);
+            const py = h*0.4 + (Math.floor(i / 5) * 15);
+            ctx.beginPath();
+            ctx.arc(px, py, 3.5, 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+      },
+      love: {
+        text: '"I LOVE YOU" (प्यार)',
+        desc: 'Universal sign: thumb, index finger, and pinky extended; middle and ring folded.',
+        confidence: '99.1%',
+        coords: 'X: 0.480 | Y: 0.360 | Z: -0.022',
+        draw: (ctx, w, h) => {
+          ctx.clearRect(0, 0, w, h);
+          ctx.strokeStyle = '#00f0ff';
+          ctx.lineWidth = 2.5;
+          ctx.fillStyle = '#c4b5fd';
+
+          const cx = w * 0.5, cy = h * 0.55;
+          const tips = [[w*0.35, h*0.4], [w*0.45, h*0.2], [w*0.65, h*0.25]];
+          tips.forEach(t => {
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(t[0], t[1]);
+            ctx.stroke();
+          });
+
+          for (let i = 0; i < 21; i++) {
+            const px = cx + (Math.cos(i) * 45);
+            const py = cy + (Math.sin(i) * 55);
+            ctx.beginPath();
+            ctx.arc(px, py, 3.5, 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+      },
+      victory: {
+        text: '"PEACE / BE PREPARED" (शांति)',
+        desc: 'Index and middle fingers raised in V-formation; reflects Scout motto resilience.',
+        confidence: '99.6%',
+        coords: 'X: 0.505 | Y: 0.310 | Z: -0.010',
+        draw: (ctx, w, h) => {
+          ctx.clearRect(0, 0, w, h);
+          ctx.strokeStyle = '#00ff66';
+          ctx.lineWidth = 2.5;
+          ctx.fillStyle = '#7c5cff';
+
+          ctx.beginPath();
+          ctx.moveTo(w*0.5, h*0.65);
+          ctx.lineTo(w*0.42, h*0.25);
+          ctx.moveTo(w*0.5, h*0.65);
+          ctx.lineTo(w*0.58, h*0.25);
+          ctx.stroke();
+
+          for (let i = 0; i < 21; i++) {
+            const px = (i < 10) ? (w*0.42 + (i*2)) : (w*0.58 - ((i-10)*2));
+            const py = h*0.25 + (i * 8);
+            ctx.beginPath();
+            ctx.arc(px, py, 3.5, 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+      }
+    };
+
+    function renderGesture(key) {
+      const g = gestureData[key];
+      if (!g) return;
+      g.draw(ctx, canvas.width, canvas.height);
+      document.getElementById('translated-text').textContent = g.text;
+      document.getElementById('translated-desc').textContent = g.desc;
+      document.getElementById('confidence-metric').textContent = g.confidence;
+      document.getElementById('landmark-coords').textContent = g.coords;
+    }
+
+    renderGesture('namaste');
+
+    document.querySelectorAll('.gesture-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.gesture-btn').forEach(b => {
+          b.classList.remove('border-brand-purple', 'bg-brand-purple/20', 'text-white');
+          b.classList.add('border-slate-800', 'bg-slate-900/80', 'text-slate-300');
+          const stat = b.querySelector('span:last-child');
+          if (stat) { stat.textContent = 'READY'; stat.className = 'text-xs font-mono text-slate-500 font-bold'; }
+        });
+        btn.classList.add('border-brand-purple', 'bg-brand-purple/20', 'text-white');
+        btn.classList.remove('border-slate-800', 'bg-slate-900/80', 'text-slate-300');
+        const activeStat = btn.querySelector('span:last-child');
+        if (activeStat) { activeStat.textContent = 'ACTIVE'; activeStat.className = 'text-xs font-mono text-emerald-400 font-bold'; }
+
+        renderGesture(btn.getAttribute('data-gesture'));
+      });
+    });
+
+    // 5. Interactive CLI Cloud Shell
+    const terminalForm = document.getElementById('terminal-form');
+    const terminalInput = document.getElementById('terminal-input');
+    const terminalOutput = document.getElementById('terminal-output');
+
+    const commands = {
+      smartkhet: "SMART KHET (स्मार्ट खेत):\n- Domain: Precision Agriculture & IoT for Uttarakhand\n- Hardware & Sensors: Soil moisture probes, DHT22 microclimate sensors, ESP32 SoC\n- Cloud Pipeline: AWS IoT Telemetry Ingestion -> CloudFront edge alerts\n- Impact: Eliminates 40% water runoff wastage on terrace farms.",
+      khet: "SMART KHET (स्मार्ट खेत):\n- Domain: Precision Agriculture & IoT for Uttarakhand\n- Hardware & Sensors: Soil moisture probes, DHT22 microclimate sensors, ESP32 SoC\n- Cloud Pipeline: AWS IoT Telemetry Ingestion -> CloudFront edge alerts\n- Impact: Eliminates 40% water runoff wastage on terrace farms.",
+      help: "Available commands:\n- skills: Inspect technical capabilities (Cloud, LLMs, IIoT, Systems)\n- projects: List primary production systems (Newlife ISL, Smart Khet, Arpit_OS, Nutri-Bridge)\n- smartkhet: View Smart Khet IoT telemetry and sensors\n- aws: Display AWS services powering this live portfolio\n- scout: Read the story behind my Nipun Rover motto\n- clear: Clear the terminal screen",
+      skills: "TECHNICAL COMPETENCIES:\n1. Cloud & Serverless (AWS Amplify, CloudFront, S3, IAM, ACM)\n2. Edge Vision & Open-Weights LLMs (MediaPipe 21-Points, Llama 3, Qwen 2.5, Gemini API)\n3. Embedded Systems & Industrial IoT (ESP32 SoCs, IIoT Sensors & MQTT Telemetry)\n4. Backend & Workstations (Python, C++, SQL, Flutter Desktop, Linux)",
+      superpowers: "TECHNICAL COMPETENCIES:\n1. Cloud & Serverless (AWS Amplify, CloudFront, S3, IAM, ACM)\n2. Edge Vision & Open-Weights LLMs (MediaPipe 21-Points, Llama 3, Qwen 2.5, Gemini API)\n3. Embedded Systems & Industrial IoT (ESP32 SoCs, IIoT Sensors & MQTT Telemetry)\n4. Backend & Workstations (Python, C++, SQL, Flutter Desktop, Linux)",
+      projects: "FEATURED PRODUCTION SYSTEMS:\n- Newlife Tech: Real-time ISL Gesture Translation (IIT Roorkee TIDES & IIM Kashipur FIED EDP)\n- Smart Khet: Autonomous Precision Agro-IoT Telemetry (ESP32, Soil Sensors, MQTT)\n- Arpit_OS & DARKONE: Modular Multimodal Workstation (Flutter Desktop)\n- Nutri-Bridge Uttarakhand: Public Health Youth Nutritional Schema (SQL/Python)",
+      aws: "AWS CLOUD INFRASTRUCTURE:\n- Hosting: AWS Amplify Hosting (ap-south-1)\n- CDN: Amazon CloudFront Global Edge Locations\n- Storage: Amazon S3 (Serverless Artifacts)\n- Security: AWS Certificate Manager (ACM TLS 1.3)",
+      scout: "THE MOTTO:\nAs a Nipun Rover in The Bharat Scouts and Guides, I live by 'Be Prepared', guiding every decision. In engineering, that means zero-downtime architecture, fail-safe edge fallbacks, and resilient systems."
+    };
+
+    function runCmd(cmd) {
+      const clean = cmd.trim().toLowerCase();
+      const userLine = document.createElement('p');
+      userLine.innerHTML = `<span class="text-emerald-400 font-bold">arpit@aws:~$</span> <span class="text-white">${clean}</span>`;
+      terminalOutput.appendChild(userLine);
+
+      if (clean === 'clear') {
+        terminalOutput.innerHTML = '';
+      } else if (commands[clean]) {
+        const resp = document.createElement('p');
+        resp.className = 'text-purple-300 whitespace-pre-line';
+        resp.textContent = commands[clean];
+        terminalOutput.appendChild(resp);
+      } else if (clean !== '') {
+        const err = document.createElement('p');
+        err.className = 'text-red-400';
+        err.textContent = `Command not recognized: '${clean}'. Type 'help' for available commands.`;
+        terminalOutput.appendChild(err);
+      }
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    terminalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      runCmd(terminalInput.value);
+      terminalInput.value = '';
+    });
+
+    document.querySelectorAll('.cmd-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        runCmd(chip.textContent);
+      });
+    });
+
+    // 6. Web Audio API Synthesizer (Zero-file sound FX)
+    let audioEnabled = false;
+    let audioCtx = null;
+    const audioBtn = document.getElementById('audio-toggle-btn');
+    const audioIcon = document.getElementById('audio-icon');
+
+    function playTone(freq = 440, type = 'sine', duration = 0.08) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    if (audioBtn) {
+      audioBtn.addEventListener('click', () => {
+        audioEnabled = !audioEnabled;
+        audioIcon.textContent = audioEnabled ? '🔊' : '🔇';
+        if (audioEnabled) {
+          playTone(660, 'sine', 0.12);
+          showToast("Sound FX Enabled", "Interactive audio feedback active.");
+        } else {
+          showToast("Sound FX Muted", "UI audio feedback silenced.");
+        }
+      });
+    }
+
+    // Attach click chime to buttons
+    document.querySelectorAll('button, .cmd-chip, .gesture-btn, .scene-btn, .scope-chip').forEach(btn => {
+      btn.addEventListener('click', () => playTone(520, 'triangle', 0.05));
+    });
+
+    // 7. Dynamic Ambient Canvas Switcher (Particles, Matrix, Constellation)
+    const ambientCanvas = document.getElementById('ambient-canvas');
+    const actx = ambientCanvas.getContext('2d');
+    let currentScene = 'particles';
+
+    function resizeAmbient() {
+      ambientCanvas.width = window.innerWidth;
+      ambientCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeAmbient);
+    resizeAmbient();
+
+    // Scene 1: Floating Tech Particles
+    const particles = Array.from({ length: 45 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8,
+      r: Math.random() * 2 + 1,
+      color: Math.random() > 0.5 ? '#7c5cff' : '#ff9900'
+    }));
+
+    // Scene 2: Matrix Rain columns
+    const matrixChars = '01アイウエオカキクケコ0123456789AWS';
+    const fontSize = 14;
+    let columns = Math.floor(window.innerWidth / fontSize);
+    let drops = Array.from({ length: columns }, () => Math.random() * -100);
+
+    function drawAmbient() {
+      const w = ambientCanvas.width;
+      const h = ambientCanvas.height;
+
+      if (currentScene === 'particles') {
+        actx.clearRect(0, 0, w, h);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = w;
+          if (p.x > w) p.x = 0;
+          if (p.y < 0) p.y = h;
+          if (p.y > h) p.y = 0;
+
+          actx.beginPath();
+          actx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          actx.fillStyle = p.color;
+          actx.fill();
+        });
+      } else if (currentScene === 'matrix') {
+        actx.fillStyle = 'rgba(9, 10, 22, 0.1)';
+        actx.fillRect(0, 0, w, h);
+        actx.fillStyle = '#00ff66';
+        actx.font = `${fontSize}px monospace`;
+
+        drops.forEach((y, i) => {
+          const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+          actx.fillText(char, i * fontSize, y * fontSize);
+          if (y * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        });
+      } else if (currentScene === 'constellation') {
+        actx.clearRect(0, 0, w, h);
+        actx.strokeStyle = 'rgba(124, 92, 255, 0.15)';
+        actx.lineWidth = 1;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              actx.beginPath();
+              actx.moveTo(particles[i].x, particles[i].y);
+              actx.lineTo(particles[j].x, particles[j].y);
+              actx.stroke();
+            }
+          }
+          actx.beginPath();
+          actx.arc(particles[i].x, particles[i].y, 2, 0, Math.PI*2);
+          actx.fillStyle = '#00f0ff';
+          actx.fill();
+          particles[i].x += particles[i].vx * 0.5;
+          particles[i].y += particles[i].vy * 0.5;
+          if (particles[i].x < 0) particles[i].x = w;
+          if (particles[i].x > w) particles[i].x = 0;
+          if (particles[i].y < 0) particles[i].y = h;
+          if (particles[i].y > h) particles[i].y = 0;
+        }
+      }
+
+      requestAnimationFrame(drawAmbient);
+    }
+    drawAmbient();
+
+    // Scene buttons explicit handlers
+    const sceneParticlesBtn = document.getElementById('scene-particles-btn');
+    const sceneMatrixBtn = document.getElementById('scene-matrix-btn');
+    const sceneConstellationBtn = document.getElementById('scene-constellation-btn');
+    const allSceneBtns = [sceneParticlesBtn, sceneMatrixBtn, sceneConstellationBtn];
+
+    function setScene(sceneName, activeBtn) {
+      currentScene = sceneName;
+      allSceneBtns.forEach(b => {
+        if (b) {
+          b.classList.remove('bg-brand-purple', 'text-white', 'font-bold');
+          b.classList.add('text-slate-400');
+        }
+      });
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-purple', 'text-white', 'font-bold');
+        activeBtn.classList.remove('text-slate-400');
+      }
+      actx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+      playTone(720, 'sine', 0.08);
+    }
+
+    if (sceneParticlesBtn) sceneParticlesBtn.addEventListener('click', () => setScene('particles', sceneParticlesBtn));
+    if (sceneMatrixBtn) sceneMatrixBtn.addEventListener('click', () => setScene('matrix', sceneMatrixBtn));
+    if (sceneConstellationBtn) sceneConstellationBtn.addEventListener('click', () => setScene('constellation', sceneConstellationBtn));
+
+    // 8. Contact Scope Chips
+    const scopeChips = document.querySelectorAll('.scope-chip');
+    const selectedScopeInput = document.getElementById('selected-scope');
+    scopeChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        scopeChips.forEach(c => {
+          c.classList.remove('border-brand-purple', 'bg-brand-purple/20', 'text-purple-300', 'font-bold', 'active');
+          c.classList.add('border-slate-700', 'bg-slate-900', 'text-slate-400');
+        });
+        chip.classList.add('border-brand-purple', 'bg-brand-purple/20', 'text-purple-300', 'font-bold', 'active');
+        chip.classList.remove('border-slate-700', 'bg-slate-900', 'text-slate-400');
+        if (selectedScopeInput) selectedScopeInput.value = chip.textContent.trim();
+        playTone(480, 'sine', 0.04);
+      });
+    });
+
+    // 9. Contact Form Toast
+    const contactForm = document.getElementById('contact-form');
+    const toast = document.getElementById('toast');
+    function showToast(title, body) {
+      document.getElementById('toast-title').textContent = title;
+      document.getElementById('toast-body').textContent = body;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 4000);
+    }
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('contact-name').value;
+      showToast("Message Transmitted!", `Thank you ${name}! Your inquiry has been dispatched to Arpit.`);
+      contactForm.reset();
+    });
+
+    // 10. AI Talk Back Speech Synthesis Engine
+    const aiTalkModal = document.getElementById('ai-talk-modal');
+    const openAiTalkBtn = document.getElementById('open-ai-talk-btn');
+    const dockAiTalkBtn = document.getElementById('dock-ai-talk-btn');
+    const closeAiTalkBtn = document.getElementById('close-ai-talk-btn');
+    const speechCaption = document.getElementById('ai-speech-caption');
+    const speechStatusLabel = document.getElementById('speech-status-label');
+    const speechPauseBtn = document.getElementById('speech-pause-btn');
+    const speechStopBtn = document.getElementById('speech-stop-btn');
+    const soundBars = document.querySelectorAll('.sound-bar');
+    let waveInterval = null;
+
+    const speechKnowledge = {
+      intro: "Arpit Singh Negi is an undergraduate Computer Science student at SDSUV Dehradun, Uttarakhand, and an official AWS Student Builder Group Leader. He specializes in low-latency edge AI and serverless cloud architectures on AWS, focused on making technology accessible to underserved communities.",
+      skills: "Arpit's technical capabilities span four key domains: Cloud and Serverless architecture on AWS with Amplify and CloudFront; Edge Vision and Open-Weights Large Language Models using MediaPipe, Llama 3, Qwen 2.5, and Gemini API; Embedded Systems and Industrial IoT with ESP32 microcontrollers; and Backend Workstations built in Flutter Desktop, Python, and C++.",
+      isl: "Newlife Tech is Arpit's flagship accessibility initiative, refined via EDP and Entrepreneurship Bootcamps at IIT Roorkee TIDES and IIM Kashipur FIED. It translates Indian Sign Language into text and speech in real time by extracting twenty-one three-dimensional hand landmarks on standard webcams without requiring costly sensory gloves.",
+      khet: "Smart Khet is Arpit's precision agriculture project designed for terrace farmers in Uttarakhand. It integrates ESP32 soil moisture and microclimate sensor telemetry with serverless cloud alerting over MQTT to reduce water runoff wastage by up to forty percent.",
+      aws: "As the AWS Student Builder Group Leader at Government Degree College Dehradun Shahar, Arpit leads campus cloud workshops, organizes Meetup chapter events, and mentors students to earn their AWS Builder IDs and explore cloud computing.",
+      scout: "Arpit earned the rank of Nipun Rover in The Bharat Scouts and Guides, living by the motto 'Be Prepared', guiding every decision. He brings this disciplined resilience to his software engineering—designing fail-safe systems with zero downtime and client-side fallbacks."
+    };
+
+    function startWaveform() {
+      if (waveInterval) clearInterval(waveInterval);
+      waveInterval = setInterval(() => {
+        soundBars.forEach(b => {
+          const h = Math.floor(Math.random() * 26) + 4;
+          b.style.height = `${h}px`;
+        });
+      }, 150);
+    }
+
+    function stopWaveform() {
+      if (waveInterval) clearInterval(waveInterval);
+      waveInterval = null;
+      soundBars.forEach(b => b.style.height = '6px');
+    }
+
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) {
+        showToast("Speech Unavailable", "Your browser does not support Web Speech API.");
+        speechCaption.textContent = text;
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      speechCaption.textContent = text;
+      speechStatusLabel.textContent = "AI SPEAKING...";
+      speechStatusLabel.className = "text-emerald-400 font-bold animate-pulse";
+      startWaveform();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      // Select natural English voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha')));
+      if (preferred) utterance.voice = preferred;
+
+      utterance.onend = () => {
+        speechStatusLabel.textContent = "FINISHED SPEAKING";
+        speechStatusLabel.className = "text-purple-400 font-bold";
+        stopWaveform();
+      };
+
+      utterance.onerror = () => {
+        speechStatusLabel.textContent = "AUDIO IDLE";
+        speechStatusLabel.className = "text-slate-400 font-bold";
+        stopWaveform();
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function openAiModal() {
+      aiTalkModal.classList.remove('hidden');
+      playTone(660, 'sine', 0.1);
+    }
+
+    function closeAiModal() {
+      aiTalkModal.classList.add('hidden');
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      stopWaveform();
+      speechStatusLabel.textContent = "READY TO SPEAK";
+      speechStatusLabel.className = "text-amber-400 font-bold";
+    }
+
+    if (openAiTalkBtn) openAiTalkBtn.addEventListener('click', () => {
+      openAiModal();
+      speakText(speechKnowledge.intro);
+    });
+
+    if (dockAiTalkBtn) dockAiTalkBtn.addEventListener('click', () => {
+      openAiModal();
+      speakText(speechKnowledge.intro);
+    });
+
+    if (cmdAiTalkTrigger) {
+      cmdAiTalkTrigger.addEventListener('click', () => {
+        closePalette();
+        openAiModal();
+        speakText(speechKnowledge.intro);
+      });
+    }
+
+    if (closeAiTalkBtn) closeAiTalkBtn.addEventListener('click', closeAiModal);
+    aiTalkModal.addEventListener('click', (e) => {
+      if (e.target === aiTalkModal) closeAiModal();
+    });
+
+    if (speechPauseBtn) {
+      speechPauseBtn.addEventListener('click', () => {
+        if ('speechSynthesis' in window) {
+          if (window.speechSynthesis.speaking) {
+            if (window.speechSynthesis.paused) {
+              window.speechSynthesis.resume();
+              speechPauseBtn.textContent = "⏸️ Pause";
+              startWaveform();
+            } else {
+              window.speechSynthesis.pause();
+              speechPauseBtn.textContent = "▶️ Resume";
+              stopWaveform();
+            }
+          }
+        }
+      });
+    }
+
+    if (speechStopBtn) {
+      speechStopBtn.addEventListener('click', () => {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        stopWaveform();
+        speechStatusLabel.textContent = "STOPPED";
+        speechStatusLabel.className = "text-red-400 font-bold";
+      });
+    }
+
+    document.querySelectorAll('.ai-topic-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const topic = btn.getAttribute('data-topic');
+        if (speechKnowledge[topic]) {
+          speakText(speechKnowledge[topic]);
+        }
+      });
+    });
+
+    const aiAskForm = document.getElementById('ai-ask-form');
+    const aiCustomQuery = document.getElementById('ai-custom-query');
+    if (aiAskForm) {
+      aiAskForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const q = aiCustomQuery.value.trim().toLowerCase();
+        aiCustomQuery.value = '';
+
+        if (!q) return;
+
+        let answer = "Arpit Singh Negi is a Computer Science developer at SDSUV Dehradun specializing in edge AI, Indian Sign Language gesture translation, and AWS cloud solutions.";
+        if (q.includes('isl') || q.includes('sign') || q.includes('newlife') || q.includes('gesture')) {
+          answer = speechKnowledge.isl;
+        } else if (q.includes('khet') || q.includes('farm') || q.includes('agriculture') || q.includes('iot')) {
+          answer = speechKnowledge.khet;
+        } else if (q.includes('aws') || q.includes('cloud') || q.includes('leader') || q.includes('sbgl') || q.includes('college')) {
+          answer = speechKnowledge.aws;
+        } else if (q.includes('scout') || q.includes('rover') || q.includes('motto') || q.includes('prepared')) {
+          answer = speechKnowledge.scout;
+        } else if (q.includes('skill') || q.includes('superpower') || q.includes('mediapipe') || q.includes('python') || q.includes('llama') || q.includes('qwen')) {
+          answer = speechKnowledge.skills;
+        } else if (q.includes('cert') || q.includes('nasscom') || q.includes('degree') || q.includes('meity')) {
+          answer = "Arpit holds certifications from NASSCOM FutureSkills Prime, Boot.dev, Infosys Springboard, and Ministry of Electronics and Information Technology (MeitY) in Prompt Engineering, Backend Systems, Cybersecurity, AI, and Office Tools.";
+        }
+
+        speakText(answer);
+      });
+    }
+  </script>
+</body>
+</html>
